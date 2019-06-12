@@ -1,7 +1,7 @@
 const COOKIE_EXPERIMENT_A = 'X-Experiment-Name=A';
 const COOKIE_EXPERIMENT_B = 'X-Experiment-Name=B';
-const PATH_EXPERIMENT_A = '/experiment-A';
-const PATH_EXPERIMENT_B = '/experiment-B';
+const REQUEST_A = 'http://test.demo.com/experiment-A';
+const REQUEST_B = 'http://test.demo.com/experiment-B';
 
 async function f(event) {
     let request = event.request;
@@ -11,39 +11,41 @@ async function f(event) {
     }
 
     let headers = request.headers;
-    let experimentUri;
+    let newRequest;
 
     // 多值
     if (typeof headers.cookie === 'object') {
         // "cookie":["cookie1","cookie2", .... , "cookieN"]
         for (let i = 0; i < headers.cookie.length; i++) {
             if (headers.cookie[i].indexOf(COOKIE_EXPERIMENT_A) >= 0) {
-                experimentUri = PATH_EXPERIMENT_A;
+                newRequest = REQUEST_A;
                 break;
             } else if (headers.cookie[i].indexOf(COOKIE_EXPERIMENT_B) >= 0) {
-                experimentUri = PATH_EXPERIMENT_B;
+                newRequest = REQUEST_B;
                 break;
             }
         }
     } else if (typeof headers.cookie === 'string') {
         if (headers.cookie.indexOf(COOKIE_EXPERIMENT_A) >= 0) {
-            experimentUri = PATH_EXPERIMENT_A;
+            newRequest = REQUEST_A;
         } else if (headers.cookie.indexOf(COOKIE_EXPERIMENT_B) >= 0) {
-            experimentUri = PATH_EXPERIMENT_B;
+            newRequest = REQUEST_B;
         }
     }
 
-    if (!experimentUri) {
+    if (!newRequest) {
         if (Math.random() < 0.75) {
-            experimentUri = PATH_EXPERIMENT_A;
+            newRequest = REQUEST_A;
         } else {
-            experimentUri = PATH_EXPERIMENT_B;
+            newRequest = REQUEST_B;
         }
     }
 
-    request.uri = experimentUri;
+    const response = await event.fetch(newRequest).catch(err => {
+        event.console.log(err);
+    });
 
-    return request;
+    return response || {status: 503, body: 'fetch err'};
 }
 
 exports.handler = f;
