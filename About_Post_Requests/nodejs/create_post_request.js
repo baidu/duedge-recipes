@@ -1,9 +1,8 @@
-exports.handler = (event, context, callback) => {
-    let req = event.req;
+async function f(event) {
+    event.request.method = 'POST';
+    event.request.body = 'data';
 
-    req.method = 'POST';
-    req.encoding = 'none';
-    req.body = 'Hello DuEdge';
+    return event.request;
+}
 
-    callback(null, req);
-};
+exports.handler = f;

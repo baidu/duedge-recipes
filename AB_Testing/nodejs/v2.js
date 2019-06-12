@@ -1,59 +1,51 @@
-const http = require("http");
-
 const COOKIE_EXPERIMENT_A = 'X-Experiment-Name=A';
 const COOKIE_EXPERIMENT_B = 'X-Experiment-Name=B';
 const REQUEST_A = 'http://test.demo.com/experiment-A';
 const REQUEST_B = 'http://test.demo.com/experiment-B';
-const ERROR_RESP = {
-    "error": {
-        "ignore": false,
-        "message": "request failed"
-    }
-};
 
-exports.handler = (event, context, callback) => {
-    let req = event.req;
+async function f(event) {
+    let request = event.request;
 
-    if (req.uri !== '/experiment') {
-        callback(null, {'skip':true});
-        return;
+    if (request.uri !== '/experiment') {
+        return request;
     }
 
-    let headers = req.headers;
-    let request;
-    if (headers.cookie) {
+    let headers = request.headers;
+    let newRequest;
+
+    // 多值
+    if (typeof headers.cookie === 'object') {
         // "cookie":["cookie1","cookie2", .... , "cookieN"]
         for (let i = 0; i < headers.cookie.length; i++) {
             if (headers.cookie[i].indexOf(COOKIE_EXPERIMENT_A) >= 0) {
-                request = REQUEST_A;
+                newRequest = REQUEST_A;
                 break;
             } else if (headers.cookie[i].indexOf(COOKIE_EXPERIMENT_B) >= 0) {
-                request = REQUEST_B;
+                newRequest = REQUEST_B;
                 break;
             }
         }
-    }
-
-    if (!request) {
-        if (Math.random() < 0.75) {
-            request = REQUEST_A;
-        } else {
-            request = REQUEST_B;
+    } else if (typeof headers.cookie === 'string') {
+        if (headers.cookie.indexOf(COOKIE_EXPERIMENT_A) >= 0) {
+            newRequest = REQUEST_A;
+        } else if (headers.cookie.indexOf(COOKIE_EXPERIMENT_B) >= 0) {
+            newRequest = REQUEST_B;
         }
     }
 
-    http.get(request, (res) => {
-        let resp = {};
-        resp.status = res.statusCode;
-        resp.headers = res.headers;
+    if (!newRequest) {
+        if (Math.random() < 0.75) {
+            newRequest = REQUEST_A;
+        } else {
+            newRequest = REQUEST_B;
+        }
+    }
 
-        let rawData = '';
-        res.setEncoding('utf8');
-        res.on('data', (chunk) => { rawData += chunk; }).on('end', () => {
-            resp.body = rawData;
-            callback(null, resp)
-        });
-    }).on('error', (e) => {
-        callback(null, ERROR_RESP);
+    const response = await event.fetch(newRequest).catch(err => {
+        event.console.log(err);
     });
-};
+
+    return response || {status: 503, body: 'fetch err'};
+}
+
+exports.handler = f;

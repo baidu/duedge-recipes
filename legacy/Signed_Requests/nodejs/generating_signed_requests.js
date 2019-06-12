@@ -5,14 +5,14 @@ const querystring = require("querystring");
 
 const PREFIX = /^\/generate\//;
 
-async function f(event) {
-    const request = event.request;
-    const uri = request.uri;
+exports.handler = (event, context, callback) => {
+    let req = event.req;
 
+    let uri = req.uri;
     if (PREFIX.test(uri)) {
         let trueUri = `${uri.slice(9)}`;
         let newUri = '/verify' + trueUri;
-        let params = querystring.parse(request.args);
+        let params = querystring.parse(req.args);
         let expire = Number(params.expire);
 
         if (isNaN(expire) || expire <= 0 || expire > 3600 * 1000) {expire = 60000}
@@ -24,16 +24,14 @@ async function f(event) {
         const cipher = crypto.createCipher('aes192', 'my key');
 
         let encrypted = cipher.update(data, 'utf8', 'hex') + cipher.final('hex');
-        return {
+        callback(null, {
             status: 200,
             body: 'now    : ' + now + '\n'
                 + 'expired: ' + expired + '\n'
-                + `${request.clientScheme}://${request.host}${newUri}?encrypted=${encrypted}` + '\n'
-        };
+                + `${req.client_scheme}://${req.host}${newUri}?encrypted=${encrypted}` + '\n'
+            }
+        );
     } else {
-        return {status: 200, body: 'skip generate'};
+        callback(null, {status:200, body: 'skip generate'});
     }
-
-}
-
-exports.handler = f;
+};

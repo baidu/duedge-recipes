@@ -1,16 +1,16 @@
 const querystring = require('querystring');
 
-exports.handler = (event, context, callback) => {
-    let req = event.req;
+async function f(event) {
+    const request = event.request;
 
-    let params = querystring.parse(req.args);
+    let params = querystring.parse(request.args);
     let sortedParams = {};
     Object.keys(params).sort().forEach(key => {
         sortedParams[key] = params[key];
     });
 
-    req.args = querystring.stringify(sortedParams);
-    req.cache_policy = 2;
+    request.args = querystring.stringify(sortedParams);
+    return request;
+}
 
-    callback(null, req);
-};
+exports.handler = f;

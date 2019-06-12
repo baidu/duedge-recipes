@@ -1,6 +1,5 @@
-exports.handler = (event, context, callback) => {
-    let req = event.req;
+async function f(event) {
+    return new Response(event.request.body, {status: 200, headers:{key: 'value'}});
+}
 
-    let decoder = new Buffer(req.body, 'base64');
-    callback(null, {status:200, body: decoder.toString()});
-};
+exports.handler = f;

@@ -3,21 +3,22 @@ const TABLET_PREFIX = '/tablet';
 const MOBILE_REG = /phone/i;
 const TABLET_REG = /pad/i;
 
-exports.handler = (event, context, callback) => {
-    let req = event.req;
-    
+async function f(event) {
+    const request = event.request;
+    const headers = request.headers;
+
     let prefix = '';
-    let headers = req.headers;
     if (headers['user-agent']) {
-        const ua = headers['user-agent'][0];
-        if (MOBILE_REG.test(ua)) {
+        if (MOBILE_REG.test(headers['user-agent'])) {
             prefix = MOBILE_PREFIX;
-        } else if (TABLET_REG.test(ua)) {
+        } else if (TABLET_REG.test(headers['user-agent'])) {
             prefix = TABLET_PREFIX;
         }
     }
 
-    req.uri = prefix + req.uri;
+    request.uri = prefix + request.uri;
+    return request;
 
-    callback(null, req);
-};
+}
+
+exports.handler = f;

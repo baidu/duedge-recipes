@@ -1,31 +1,26 @@
 const url = require("url");
 
-const SKIP = {skip: true};
+async function f(event) {
+    const request = event.request;
 
-exports.handler = (event, context, callback) => {
-    let req = event.req;
+    const referer = request.headers['referer'];
+    const host = request.host;
 
-    let referer = req.headers['referer'];
-    let host = req.host;
-    let valid = false;
     if (referer) {
-        let u = url.parse(referer[0]);
+        let u = url.parse(referer);
         if (u && u.host === host) {
-            valid = true
+            return request;
         }
     } else {
-        valid = true
+        return request;
     }
 
-    if (valid) {
-        callback(null, SKIP);
-    } else {
-        const resp = {
-            status: 302,
-            headers: {
-                location: `http://${host}/`
-            },
-        };
-        callback(null, resp);
-    }
-};
+    return {
+        status: 302,
+        headers: {
+            location: `${request.originScheme}://${host}/`
+        }
+    };
+}
+
+exports.handler = f;

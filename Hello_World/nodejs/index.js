@@ -1,3 +1,4 @@
-exports.handler = (event, context, callback) => {
-    callback(null, {status: 200, body: 'Hello DuEdge!'});
-};
+async function f(event) {
+    return { status: 200, body: 'Hello DuEdge!' };
+}
+exports.handler = f;

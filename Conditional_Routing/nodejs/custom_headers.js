@@ -1,15 +1,17 @@
 const TAG = 'x-replace';
 
-exports.handler = (event, context, callback) => {
-    let req = event.req;
+async function f(event) {
+    const request = event.request;
+    const headers = request.headers;
 
     let prefix = '';
-    let headers = req.headers;
-    if (headers[TAG]) {
-        prefix = '/' + headers[TAG][0]
+    if (typeof headers[TAG]) {
+        prefix = '/' + headers[TAG].split(',')[0];
     }
 
-    req.uri = prefix + req.uri;
+    request.uri = prefix + request.uri;
+    return request;
 
-    callback(null, req);
-};
+}
+
+exports.handler = f;

@@ -33,15 +33,17 @@
 - Rewrite request uri and Updating Error Statuses
   - Rewrite request uri (改写请求)
   - Update the Error Status Code to 302-Found (重定向异常响应)
+- Legacy (历史版本代码, 仅供参考)
 
 ## 快速开始
 
 在 [duedge](https://duedge.baidu.com) 官网接入域名, 绑定 `Hello World` 函数, 符合 `route` 规则的请求均会返回 200 / Hello DuEdge!
 
 ```js
-exports.handler = (event, context, callback) => {
-    callback(null, {status: 200, body: 'Hello DuEdge!'});
-};
+async function f(event) {
+    return { status: 200, body: 'Hello DuEdge!' };
+}
+exports.handler = f;
 ```
 
 ## 测试

@@ -1,13 +1,11 @@
-const FORBID = {status: 403, body: "Sorry, this page is not available."};
-const SKIP = {skip: true};
+async function f(event) {
+    const request = event.request;
 
-exports.handler = (event, context, callback) => {
-    let req = event.req;
-
-    let method = req.method;
-    if (method === 'POST' || method === 'PUT') {
-        callback(null, FORBID);
+    if (request.method === 'POST' || request.method === 'PUT') {
+        return {status: 403};
     } else {
-        callback(null, SKIP);
+        return request;
     }
-};
+}
+
+exports.handler = f;

@@ -1,17 +1,17 @@
-const FORBID = {status: 403, body: "Sorry, this page is not available."};
-const SKIP = {skip: true};
 const ROBOT_REG = /robot/i;
 
-exports.handler = (event, context, callback) => {
-    let req = event.req;
+async function f(event) {
+    const request = event.request;
+    const headers = request.headers;
 
-    let headers = req.headers;
+    let prefix = '';
     if (headers['user-agent']) {
-        const ua = headers['user-agent'][0];
-        if (ROBOT_REG.test(ua)) {
-            callback(null, FORBID);
+        if (ROBOT_REG.test(headers['user-agent'])) {
+            return {status: 403};
         } else {
-            callback(null, SKIP);
+            return request;
         }
     }
-};
+}
+
+exports.handler = f;
