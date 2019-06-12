@@ -3,18 +3,17 @@ const COOKIE_EXPERIMENT_B = 'X-Experiment-Name=B';
 const PATH_EXPERIMENT_A = '/experiment-A';
 const PATH_EXPERIMENT_B = '/experiment-B';
 
-async function f(event) {
-    let request = event.request;
+exports.handler = (event, context, callback) => {
+    let req = event.req;
 
-    if (request.uri !== '/experiment') {
-        return request;
+    if (req.uri !== '/experiment') {
+        callback(null, {'skip': true});
+        return;
     }
 
-    let headers = request.headers;
+    let headers = req.headers;
     let experimentUri;
-
-    // 多值
-    if (typeof headers.cookie === 'object') {
+    if (headers.cookie) {
         // "cookie":["cookie1","cookie2", .... , "cookieN"]
         for (let i = 0; i < headers.cookie.length; i++) {
             if (headers.cookie[i].indexOf(COOKIE_EXPERIMENT_A) >= 0) {
@@ -24,12 +23,6 @@ async function f(event) {
                 experimentUri = PATH_EXPERIMENT_B;
                 break;
             }
-        }
-    } else if (typeof headers.cookie === 'string') {
-        if (headers.cookie.indexOf(COOKIE_EXPERIMENT_A) >= 0) {
-            experimentUri = PATH_EXPERIMENT_A;
-        } else if (headers.cookie.indexOf(COOKIE_EXPERIMENT_B) >= 0) {
-            experimentUri = PATH_EXPERIMENT_B;
         }
     }
 
@@ -41,8 +34,7 @@ async function f(event) {
         }
     }
 
-    request.uri = experimentUri;
+    req.uri = experimentUri;
 
-    return request;
-}
-exports.handler = f;
+    callback(null, req);
+};
