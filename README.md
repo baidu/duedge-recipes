@@ -33,7 +33,10 @@
 - Rewrite request uri and Updating Error Statuses
   - Rewrite request uri (改写请求)
   - Update the Error Status Code to 302-Found (重定向异常响应)
-
+- About KV
+  - global KV (全局只读)
+  - local Kv (机房内可读可写)
+- About Log (如何记录 log)
 
 ## 快速开始
 
