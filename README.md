@@ -33,7 +33,7 @@
 - Rewrite request uri and Updating Error Statuses
   - Rewrite request uri (改写请求)
   - Update the Error Status Code to 302-Found (重定向异常响应)
-- Legacy (历史版本代码, 仅供参考)
+
 
 ## 快速开始
 
