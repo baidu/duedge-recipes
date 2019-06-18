@@ -11,6 +11,10 @@
 
 此代码仓库旨在提供常见任务的示例, 包括:
 
+- About Log (如何记录 log)
+- About KV
+  - global KV (全局只读)
+  - local Kv (机房内可读可写)
 - A/B Testing (根据 cookie 修改 uri 为 A/B 两种页面)
 - Redirecting Unauthenticated Users to a Sign-In Page (根据 cookie 情况重定向到登录页)
 - Aggregating Multiple Requests (合并多分请求结果)
@@ -33,7 +37,6 @@
 - Rewrite request uri and Updating Error Statuses
   - Rewrite request uri (改写请求)
   - Update the Error Status Code to 302-Found (重定向异常响应)
-- Legacy (历史版本代码, 仅供参考)
 
 ## 快速开始
 
