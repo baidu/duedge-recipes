@@ -21,7 +21,7 @@ async function f(event) {
         if (response.status >= 200 && response.status < 400) {
             return response;
         } else {
-            const redirectURL = `${request.originScheme}://${request.host}${request.uri}?${request.args}`;
+            const redirectURL = src;
             return {
                 status: 302,
                 headers: {
