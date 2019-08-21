@@ -5,7 +5,7 @@ async function f(event) {
     const headers = request.headers;
 
     let prefix = '';
-    if (typeof headers[TAG]) {
+    if (headers[TAG]) {
         prefix = '/' + headers[TAG].split(',')[0];
     }
 
