@@ -13,6 +13,8 @@ local PATH_EXPERIMENT_B = '/experiment-B'
 
 function _M.handler(event)
     local request = event.request
+
+    -- 非测试页直接回源
     if request.uri ~= '/experiment' then
         return request
     end
@@ -37,6 +39,7 @@ function _M.handler(event)
         end
     end
 
+    -- 没有 cookie 则随机选取
     if not experiment_uri then
         if math_random() < 0.75 then
             experiment_uri = PATH_EXPERIMENT_A
@@ -46,6 +49,8 @@ function _M.handler(event)
     end
 
     request.uri = experiment_uri
+
+    -- runtime 自动回源
     return request
 end
 

@@ -6,6 +6,7 @@ const PATH_EXPERIMENT_B = '/experiment-B';
 async function f(event) {
     let request = event.request;
 
+    // 非测试页直接回源
     if (request.uri !== '/experiment') {
         return request;
     }
@@ -13,19 +14,9 @@ async function f(event) {
     let headers = request.headers;
     let experimentUri;
 
-    // 多值
-    if (typeof headers.cookie === 'object') {
-        // "cookie":["cookie1","cookie2", .... , "cookieN"]
-        for (let i = 0; i < headers.cookie.length; i++) {
-            if (headers.cookie[i].indexOf(COOKIE_EXPERIMENT_A) >= 0) {
-                experimentUri = PATH_EXPERIMENT_A;
-                break;
-            } else if (headers.cookie[i].indexOf(COOKIE_EXPERIMENT_B) >= 0) {
-                experimentUri = PATH_EXPERIMENT_B;
-                break;
-            }
-        }
-    } else if (typeof headers.cookie === 'string') {
+    // 遵循 nodejs 默认设定
+    // http://nodejs.cn/api/http.html#http_class_http_incomingmessage
+    if (typeof headers.cookie === 'string') {
         if (headers.cookie.indexOf(COOKIE_EXPERIMENT_A) >= 0) {
             experimentUri = PATH_EXPERIMENT_A;
         } else if (headers.cookie.indexOf(COOKIE_EXPERIMENT_B) >= 0) {
@@ -33,6 +24,7 @@ async function f(event) {
         }
     }
 
+    // 没有 cookie 则随机选取
     if (!experimentUri) {
         if (Math.random() < 0.75) {
             experimentUri = PATH_EXPERIMENT_A;
@@ -43,6 +35,7 @@ async function f(event) {
 
     request.uri = experimentUri;
 
+    // runtime 自动回源
     return request;
 }
 
