@@ -3,7 +3,7 @@ import json
 
 async def handler(event):
     # 待请求的 apis
-    apis = ['http://test.wangwenqi.win/api1', 'http://test.wangwenqi.win/api2', 'http://test.wangwenqi.win/api3']
+    apis = ['http://test.demo.com/api1', 'http://test.demo.com/api2', 'http://test.demo.com/api3']
     data = []
 
     # 依次 fetch

@@ -2,8 +2,8 @@ import random
 
 COOKIE_EXPERIMENT_A = 'X-Experiment-Name=A'
 COOKIE_EXPERIMENT_B = 'X-Experiment-Name=B'
-REQUEST_A = 'http://test.wangwenqi.win/experiment-A'
-REQUEST_B = 'http://test.wangwenqi.win/experiment-B'
+REQUEST_A = 'http://test.demo.com/experiment-A'
+REQUEST_B = 'http://test.demo.com/experiment-B'
 
 
 async def handler(event):
