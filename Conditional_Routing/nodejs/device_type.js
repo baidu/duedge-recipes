@@ -9,6 +9,7 @@ async function f(event) {
 
     let prefix = '';
     if (headers['user-agent']) {
+        // 利用正则匹配不同 UA
         if (MOBILE_REG.test(headers['user-agent'])) {
             prefix = MOBILE_PREFIX;
         } else if (TABLET_REG.test(headers['user-agent'])) {
@@ -16,7 +17,10 @@ async function f(event) {
         }
     }
 
+    // 更新 uri
     request.uri = prefix + request.uri;
+
+    // 自动回源
     return request;
 
 }

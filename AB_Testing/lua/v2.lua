@@ -13,6 +13,8 @@ local REQUEST_B = 'http://test.demo.com/experiment-B'
 
 function _M.handler(event)
     local request = event.request
+
+    -- 非测试页直接回源
     if request.uri ~= '/experiment' then
         return request
     end
@@ -37,6 +39,7 @@ function _M.handler(event)
         end
     end
 
+    -- 没有 cookie 则随机选取
     if not new_request then
         if math_random() < 0.75 then
             new_request = REQUEST_A
@@ -45,6 +48,7 @@ function _M.handler(event)
         end
     end
 
+    -- 使用 fetch 回源, 可以自定义响应
     local res, err = event.fetch(new_request)
     if err then
         return {status = 503, body = err}

@@ -1,6 +1,26 @@
 async function f(event) {
     // flush history data
-    await event.kv.del('myKey');
+    await event.kv.flush();
+
+    // list all keys with ttl
+    let list = await event.kv.list()
+    if (list.length > 0) {
+        return {status: 503, body: 'some thing wrong!'};
+    }
+
+    await event.kv.set('key1', '1');
+    await event.kv.set('key2', '2');
+    await event.kv.set('key3', '3');
+    await event.kv.set('myKey', '4');
+
+    // list all keys with ttl
+    list = await event.kv.list()
+    if (list.length != 4) {
+        return {status: 503, body: 'some thing wrong!'};
+    }
+
+    // flush history data
+    await event.kv.flush();
 
     // not found
     let v = await event.kv.get('myKey');
@@ -46,6 +66,7 @@ async function f(event) {
     await event.fetch('https://www.google.com', {timeout: 1}).catch(err => {
         // haha, got timeout
     })
+    // the key is expired
     v = await event.kv.get('expireKey');
     if (v) {
         return {status: 503, body: 'some thing wrong!'};

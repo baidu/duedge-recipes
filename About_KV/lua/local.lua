@@ -2,7 +2,23 @@ local _M = {}
 
 function _M.handler(event)
     -- flush history data
-    event.kv.del('my_key')
+    event.kv.flush()
+
+    -- list all keys with ttl
+    local list = event.kv.list()
+    if #list > 0 then return {status = 503, body = 'some thing wrong!'} end
+
+    event.kv.set('key1', '1')
+    event.kv.set('key2', '2')
+    event.kv.set('key3', '3')
+    event.kv.set('myKey', '4')
+
+    -- list all keys with ttl
+    local list = event.kv.list()
+    if #list ~= 4 then return {status = 503, body = 'some thing wrong!'} end
+
+    -- flush history data
+    event.kv.flush()
 
     local v = event.kv.get('my_key')
     if v then return {status = 503, body = 'some thing wrong!'} end

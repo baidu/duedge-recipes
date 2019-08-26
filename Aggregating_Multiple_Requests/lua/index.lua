@@ -1,10 +1,12 @@
 local _M = {}
 
 function _M.handler(event)
+    -- 待请求的 apis
     local apis = {'http://test.demo.com/api1', 'http://test.demo.com/api2', 'http://test.demo.com/api3'}
     local res = {}
 
     for _, api in ipairs(apis) do
+        -- 依次 fetch
         local data, err = event.fetch(api, {origins = event.request.origins})
 
         if err then
