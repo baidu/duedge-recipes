@@ -37,6 +37,15 @@
 - Rewrite request uri and Updating Error Statuses
   - Rewrite request uri (改写请求)
   - Update the Error Status Code to 302-Found (重定向异常响应)
+- About AI
+  - Call face detect (调用人脸检测)
+  - Call image censor (调用图像审核)
+  - Call antiporn (调用色情识别)
+  - Call terror censor (调用暴恐识别)
+  - Call politician censor (调用政治人物)
+  - Prevent uploading erotic image (防止上传色情图片)
+  - Prevent access to erotic image (防止用户访问色情图片)
+
 
 ## 快速开始
 
