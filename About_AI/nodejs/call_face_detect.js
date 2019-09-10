@@ -15,11 +15,11 @@ async function doRequest(event) {
 
     event.console.log(util.format('%d faces Found in the Picture.', result['result']['face_num']));
     for (let i = 0;i < result['result']['face_num'];i ++) {
-	    let face = result['result']['face_list'][i];
+        let face = result['result']['face_list'][i];
         event.console.log(util.format('No.%d face\'s age is %d', i, face['age']));
         event.console.log(util.format('No.%d face\'s location is %s', i, JSON.stringify(face['location'])));
         event.console.log(util.format('No.%d face\'s expression is %s', i, face['expression']['type']));
-        event.console.log(util.format('No.%d face\'s beauty score is %s', i, JSON.stringify(face['beauty'])));
+        event.console.log(util.format('No.%d face\'s beauty score is %f', i, face['beauty']));
     }
 
     return new Response(JSON.stringify(result), {status: 200});

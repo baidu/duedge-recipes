@@ -16,6 +16,6 @@ async def handler(event):
         event.console.log('No.%d face\'s age is %d' % (i, face['age']))
         event.console.log('No.%d face\'s location is %s' % (i, json.dumps(face['location'])))
         event.console.log('No.%d face\'s expression is %s' % (i, face['expression']['type']))
-        event.console.log('No.%d face\'s beauty score is %s' % (i, json.dumps(face['beauty'])))
+        event.console.log('No.%d face\'s beauty score is %f' % (i, face['beauty']))
 
     return Response(body=json.dumps(result, ensure_ascii=False), status=200)
