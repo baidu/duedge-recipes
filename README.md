@@ -51,11 +51,32 @@
 
 在 [duedge](https://duedge.baidu.com) 官网接入域名, 绑定 `Hello World` 函数, 符合 `route` 规则的请求均会返回 200 / Hello DuEdge!
 
+### node
+
 ```js
 async function f(event) {
-    return { status: 200, body: 'Hello DuEdge!' };
+    return {status: 200, body: 'Hello DuEdge!'};
 }
 exports.handler = f;
+```
+
+### python
+
+```python
+async def handler(event):
+    return {'status': 201, 'body': 'Hello DuEdge!'}
+```
+
+### lua
+
+```lua
+local _M = {}
+
+function _M.handler(event)
+    return {status = 200, body = 'Hello DuEdge!'}
+end
+
+return _M
 ```
 
 ## 测试
