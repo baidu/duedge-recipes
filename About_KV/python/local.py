@@ -61,7 +61,7 @@ async def handler(event):
 
     try:
         # let`s wait 1s
-        await event.fetch('https://www.google.com', {'timeout': 1})
+        await event.fetch('https://www.google.com', config={'timeout': 1})
     except Exception:
         pass
 
