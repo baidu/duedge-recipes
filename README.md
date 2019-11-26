@@ -12,6 +12,9 @@
 此代码仓库旨在提供常见任务的示例, 包括:
 
 - About Log (如何记录 log)
+- About Cache (cache 相关操作)
+  - fetch (利用 fetch 回源)
+  - cache (操作本地缓存)
 - About KV
   - global KV (全局只读)
   - local Kv (机房内可读可写)
