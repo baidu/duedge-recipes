@@ -28,7 +28,7 @@
   - Ignore POST And PUT HTTP Requests (忽略 POST/PUT 请求)
   - Deny A Spider Or Crawler (拦截爬虫)
   - Prevent A Specific IP From Connecting (根据 clinetIP 拦截)
-  - Hot-link Protection (防盗链)
+- Hot-link Protection (防盗链)
 - About Post Requests
   - Read Post Data (获取 POST body)
   - Create a Post Request (构造 POST 请求)
