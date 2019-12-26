@@ -1,11 +1,9 @@
 async function f(event) {
-    const v = await event.kv.getGlobal('myKey');
+    event.console.log(await event.kv.getGlobal('exist'));
 
-    if (v) {
-        return {status: 200, body: v};
-    } else {
-        return {status: 404, body: 'not found!'};
-    }
+    event.console.log(await event.kv.getGlobal(['not-exist', 'exist', 'not-exist']))
+
+    return {status: 200, body: 'done'};
 }
 
 exports.handler = f;

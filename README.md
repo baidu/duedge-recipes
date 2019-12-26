@@ -16,8 +16,10 @@
   - fetch (利用 fetch 回源)
   - cache (操作本地缓存)
 - About KV
-  - global KV (全局只读)
-  - local Kv (机房内可读可写)
+  - global (全局只读 KV)
+  - string (机房内可读可写 KV, string 相关, get/set/setnx/incrby)
+  - bit (机房内可读可写 KV, bit 相关, getbit/setbit/bitcount)
+  - list (机房内可读可写 KV, list 相关, lpush/rpush/lpop/rpop/lrange/ltrim)
 - A/B Testing (根据 cookie 修改 uri 为 A/B 两种页面)
 - Redirecting Unauthenticated Users to a Sign-In Page (根据 cookie 情况重定向到登录页)
 - Aggregating Multiple Requests (合并多分请求结果)
