@@ -35,12 +35,15 @@ function _M.handler(event)
         -- for the key and a nil salt
         local encrypted = su.encode_base64(aes_128_cbc_md5:encrypt(data))
 
+        -- url encode
+        local args = su.encode_args({encrypted = encrypted})
+
         -- 输出详细信息
         return {
             status = 200,
             body = 'now    : ' .. now .. '\n'
                 .. 'expired: ' .. expired .. '\n'
-                .. string.format('%s://%s%s?encrypted=%s', request.client_scheme, request.host, new_uri, encrypted) .. '\n'
+                .. string.format('%s://%s%s?%s', request.client_scheme, request.host, new_uri, args) .. '\n'
         }
     else
         return {status = 200, body = 'skip generate'}
