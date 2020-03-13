@@ -29,12 +29,15 @@ async function f(event) {
         const cipher = crypto.createCipher('aes192', 'my key');        
         let encrypted = cipher.update(data, 'utf8', 'hex') + cipher.final('hex');
 
+        // url encode
+        const args = querystring.encode({'encrypted': encrypted})
+
         // 输出详细信息
         return {
             status: 200,
             body: 'now    : ' + now + '\n'
                 + 'expired: ' + expired + '\n'
-                + `${request.clientScheme}://${request.host}${newUri}?encrypted=${encrypted}` + '\n'
+                + `${request.clientScheme}://${request.host}${newUri}?${args}` + '\n'
         };
     } else {
         return {status: 200, body: 'skip generate'};

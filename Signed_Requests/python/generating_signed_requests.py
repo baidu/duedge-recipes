@@ -51,8 +51,8 @@ async def handler(event):
         return {'status': 200, 'body': 'skip generate'}
 
     # 生成校验 path
-    true_uri = uri[10:]
-    new_uri = '/verify/' + true_uri
+    true_uri = uri[9:]
+    new_uri = '/verify' + true_uri
 
     # 可以通过参数指定过期时间
     params = parse.parse_qs(request.args)
@@ -74,10 +74,13 @@ async def handler(event):
     crypt = Crypt('111111111111111111111111')
     encrypted = crypt.encrypt(data)
 
+    # url encode
+    args = parse.urlencode({'encrypted': encrypted})
+
     # 输出详细信息
     return {
         'status': 200,
         'body': 'now    : ' + str(now) + '\n'
               + 'expired: ' + str(expired) + '\n'
-              + '%s://%s%s?encrypted=%s' % (request.client_scheme, request.host, new_uri, encrypted) + '\n'
+              + '%s://%s%s?%s' % (request.client_scheme, request.host, new_uri, args) + '\n'
     }

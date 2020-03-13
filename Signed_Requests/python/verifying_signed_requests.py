@@ -78,7 +78,7 @@ async def handler(event):
 
         # 校验路径是否一致
         sign_uri = decrypted[:-13]
-        request_uri = uri[8:]
+        request_uri = uri[7:]
         if sign_uri != request_uri:
             return {
                 'status': 403,

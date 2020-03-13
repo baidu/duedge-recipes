@@ -8,7 +8,7 @@ function _M.handler(event)
     end
 
     -- 生成 cookie
-    local data = string.format('randomcookie=%d; Expires=Wed, 21 Oct 8102 07:28:00 GMT; Path="/"', math.random())
+    local data = string.format('randomcookie=%s; Expires=Wed, 21 Oct 8102 07:28:00 GMT; Path="/"', math.random())
 
     local headers = res.headers
     local cookie = headers['Set-Cookie']
